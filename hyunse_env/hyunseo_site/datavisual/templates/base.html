@@ -1,0 +1,55 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<title>{% block page_title %}Information Site Hyunseo{% endblock %}</title>
+	<meta charset="utf-8">
+	
+	<!-- static resources -->
+	<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/infinite.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/d3.min.js' %}"></script>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link rel="stylesheet" href="{% static 'css/test.css' %}">
+	<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" type="text/css">
+	<!-- Compiled and minified JavaScript -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script> -->
+	      
+	<!-- cdn -->
+	<script src="https://cdn.rawgit.com/Dogfalo/materialize/master/dist/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.min.js"></script>
+</head>
+
+<body>
+	<header>
+		 <!-- SideNav -->
+  		<ul id="nav-mobile" class="side-nav fixed" style="transform: translateX(0%);">
+		    <li>
+		      <div class="user-view">
+		      <div class="background">
+		          <img src="{% static 'img/kings.jpg' %}">
+		      </div>
+		      <a href="#!user"><img class="circle" src="{% static 'img/face.jpg' %}"></a>
+		      <a href="#!name"><span class="white-text name">Park Hyunseo</span></a>
+		    </li>
+		    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+		    <li><a href="#!">Second Link</a></li>
+		    <li><div class="divider"></div></li>
+		    <li><a class="subheader">Subheader</a></li>
+		    <li><a class="waves-effect" href="/">Home</a></li>
+		    <li><a class="waves-effect" href="/memo">Memo</a></li>
+		    <div class="card-panel teal">
+		      <span class="white-text">Hi my name is ParkHyunseo, Nice to meet you</span>
+		    </div>
+	  	</ul>
+	  	<div class="drag-target" data-sidenav="nav-mobile" style="touch-action:pan-y;
+	  	-webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0,0,0,0); left: 0px;"></div>
+	</header>
+{% block content %}{% endblock %}
+</body>
+

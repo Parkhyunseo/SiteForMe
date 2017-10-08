@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<main>
+  <!-- Logo -->
+  	<div id="logo" class="block green">
+      <nav class="pushpin-demo-nav pinned" data-target="logo">
+        <div class="nav-wrapper green light-1">
+          <div class="container">
+            <a href="#" data-activates="nav-mobile" class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only ">
+              <i class="material-icons">menu</i>
+            </a>
+            <a href="#" class="brand-logo center">Hyunseo</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+    
+  <!-- Memo Input Form -->
+  <div class="row" style="margin-top :90px;">
+    <form class="col s12" method="post" action="{% url 'memo' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-field col s12">
+          {{ form }}
+          <!--<textarea name="memo_text" id="memo_text" class="materialize-textarea"></textarea>-->
+          <!--<label for="memo_text">Textarea</label>-->
+          <button class="btn waves-effect waves-light right" type="submit">
+            Submit
+            <i class="material-icons right">send</i>
+          </button>
+          <!--{{ form.as_p }}-->
+        </div>
+    </form>
+  </div>
+
+  <!-- infinite Card -->  
+  <div class="infinite-container">
+    {% for memo in memos %}
+        <div class="infinite-item" >
+            <div class="card-panel {{ memo.content_color }}">
+                <span class="white-text">{{ memo.content }}</span>
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+
+  {% if memos.has_next %}
+    <a class="infinite-more-link" href="?page={{ memos.next_page_number }}">More</a>
+  {% endif %}
+
+  <div class="loading" style="display: none;">
+    Loading...
+  </div>
+
+  <script type="text/javascript">
+    
+    //form submit with enter
+    $("textarea").keyup(function(event){
+      if(event.keyCode == 13){
+          $("form").submit();
+      }
+    });
+
+    
+    $('.dropdown-button').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrain_width: true, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false // Displays dropdown below the button
+    });
+    
+    $('.button-collapse').sideNav({
+      menuWidth: 300, // Default is 300
+      edge: 'left', // Choose the horizontal origin
+      closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+      draggable: true, // Choose whether you can drag to open on touch screens,
+      onOpen: function(el) { /* Do Stuff */ }, // A function to be called when sideNav is opened
+      onClose: function(el) { /* Do Stuff */ }, // A function to be called when sideNav is closed
+    });
+    
+    $(document).ready(function(){
+      $('.collapsible').collapsible({
+        accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+      });
+    });
+    
+    /*$(document).ready(function(){
+      $('.tabs-wrapper .row').pushpin({ top: $('.tabs-wrapper').offset().top });
+    });*/
+    
+    $(document).ready(function(){
+        $('.target').pushpin({
+          top: 0,
+          bottom: 1000,
+          offset: 0
+        });
+        $('select').material_select();
+        $('.scrollspy').scrollSpy();
+    });
+    
+    var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      onBeforePageLoad: function () {
+        console.log("before");
+        $('.loading').show();
+      },
+      onAfterPageLoad: function ($items) {
+        console.log("after");
+        $('.loading').hide();
+      }
+    });
+
+      $('.pushpin-nav').each(function() {
+	      var $this = $(this);
+	      var $target = $('#' + $(this).attr('data-target'));
+	      $this.pushpin({
+	        top: $target.offset().top,
+	        bottom: $target.offset().top + $target.outerHeight() - $this.height()
+	      });
+	    });
+  </script>
+</main>
+{% endblock %}

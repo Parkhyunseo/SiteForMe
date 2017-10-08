@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<main>
+    <!-- Logo -->
+    <div id="logo" class="block green">
+        <nav class="pushpin-demo-nav pinned" data-target="logo">
+            <div class="nav-wrapper green light-1">
+                <div class="container">
+                    <a href="#" data-activates="nav-mobile" class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only ">
+                        <i class="material-icons">menu</i>
+                    </a>
+                    <a href="#" class="brand-logo center">Hyunseo</a>
+                 </div>
+            </div>
+        </nav>
+    </div>
+    
+    <!-- Card Widgets -->
+    <div id='card-widgets' style="margin-top:90px;">
+        <div class="row">
+            <div id="widgets_inner" class="col s12 m12 14">
+                <!-- task input form -->
+                <div id="task_form" class="card-panel row" hidden>
+                    <form class="col s12" method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="input-field col s12">
+                                {{ form.content }}
+                                <!-- form  1-->
+                                <!--<input placeholder="Write Your Task" id="task_text" type="text" class="validate">
+                                <label for="task_text">Task</label>-->
+                            </div>
+                            <div class="input-field col s12">
+                                {{ form.duedate }}
+                                <!--
+                                <input placeholder="Click" id="task_date" type='text' class='datepicker'>
+                                <label for="task_date">Due date</label>-->
+                            </div>
+                            <div class="input-field col s12">
+                                {{ form.tag }}
+                                <!--<select>
+                                    <option value="" disabled selected>Choose Tag</option>
+                                    <option value="1"><span class="task-cat teal">TODO</span></option>
+                                    <option value="2"><span class="task-cat purple">Must Be</span></option>
+                                    <option value="3"><span class="task-cat pink">Every Day</span></option>
+                                </select>
+                                <label>Select Tag</label>-->
+                            </div>
+                            <button class="btn waves-effect waves-light right" type="submit">Submit<i class="material-icons right">send</i></button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- task card-->
+                <ul id="task-card" class="collection with-header">
+                    <li class="collection-header cyan">
+                        <h4 class="task-card-title">My Task</h4>
+                        <p class="task-card-date">{{ today }}</p>
+                        <a id="add_task" class="btn-floating waves-effect waves-light red" style="float:right"><i class="material-icons">add</i></a>
+                    </li>
+                    {% for task in tasks %}
+                    <li class="collection-item dismissable" style="touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                        <input type="checkbox" id="task{{forloop.counter}}">
+                        <label for="task{{forloop.counter}}" style="text-decoration: none;">{{ task.content }}<a href="#" class="secondary-content"><span class="ultra-small">{{ task.duedate|date:"d M, Y" }}</span></a>
+                        </label>
+                        {% if task.tag == "TODO" %}
+                            <span class="task-cat teal">{{ task.tag }}</span>
+                        {% endif %}
+                        {% if task.tag == "Must Be" %}
+                            <span class="task-cat purple">{{ task.tag }}</span>
+                        {% endif %}
+                        {% if task.tag == "Every Day" %}
+                            <span class="task-cat pink">{{ task.tag }}</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                    <!--<li class="collection-item dismissable" style="touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                        <input type="checkbox" id="task1">
+                        <label for="task1" style="text-decoration: none;">Create Mobile App UI. <a href="#" class="secondary-content"><span class="ultra-small">Today</span></a>
+                        </label>
+                        <span class="task-cat teal">Mobile App</span>
+                    </li>
+                    <li class="collection-item dismissable" style="touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                        <input type="checkbox" id="task2">
+                        <label for="task2" style="text-decoration: none;">Check the new API standerds. <a href="#" class="secondary-content"><span class="ultra-small">Monday</span></a>
+                        </label>
+                        <span class="task-cat purple">Web API</span>
+                    </li>
+                    <li class="collection-item dismissable" style="touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                        <input type="checkbox" id="task3" checked="checked">
+                        <label for="task3" style="text-decoration: line-through;">Check the new Mockup of ABC. <a href="#" class="secondary-content"><span class="ultra-small">Wednesday</span></a>
+                        </label>
+                        <span class="task-cat pink">Mockup</span>
+                    </li>
+                    <li class="collection-item dismissable" style="touch-action: pan-y; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                        <input type="checkbox" id="task4" checked="checked" disabled="disabled">
+                        <label for="task4" style="text-decoration: line-through;">I did it !</label>
+                        <span class="task-cat cyan">Mobile App</span>
+                        </li>
+                    </ul>-->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.button-collapse').sideNav({
+          menuWidth: 300, // Default is 300
+          edge: 'left', // Choose the horizontal origin
+          closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+          draggable: true, // Choose whether you can drag to open on touch screens,
+          onOpen: function(el) { /* Do Stuff */ }, // A function to be called when sideNav is opened
+          onClose: function(el) { /* Do Stuff */ }, // A function to be called when sideNav is closed
+        });
+        
+        $(document).ready(function(){
+            $('.target').pushpin({
+              top: 0,
+              bottom: 1000,
+              offset: 0
+            });
+            $('select').material_select();
+            $('.collapsible').collapsible({
+                accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                });
+        });
+        
+        $('#add_task').click(function(){
+            $("#task_form").toggle();
+            /*$('#widgets_inner').append("<input type='text' class='datepicker'>")*/
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year,
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: false // Close upon selecting a date,
+          });
+        });
+        
+        $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year,
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: false // Close upon selecting a date,
+          });
+        $('.pushpin-nav').each(function() {
+	      var $this = $(this);
+	      var $target = $('#' + $(this).attr('data-target'));
+	      $this.pushpin({
+	        top: $target.offset().top,
+	        bottom: $target.offset().top + $target.outerHeight() - $this.height()
+	      });
+	    });
+	    
+    </script>
+</main>
+{% endblock %}
